@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MCPExNghia Addons - Neon Final</title>
+  <title>MCPExNghia Addons - Neon Final (Search & Ratings)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
     :root{
@@ -90,7 +90,10 @@
     .admin-tools input{padding:8px;border-radius:6px;border:1px solid rgba(180,140,255,0.08);background:transparent;color:#fff}
 
     /* Main area */
-    main{padding:28px 16px 80px;max-width:1100px;margin:0 auto;}
+    main{padding:18px 16px 80px;max-width:1100px;margin:0 auto;}
+    .search-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:12px}
+    .search-input{width:100%;max-width:640px;padding:10px 12px;border-radius:10px;border:1px solid rgba(120,80,200,0.08);background:linear-gradient(90deg, rgba(10,4,20,0.6), rgba(15,6,30,0.6));color:#fff;outline:none}
+    .search-input:focus{box-shadow:0 0 20px rgba(90,40,180,0.12);border-color:var(--violet-2)}
     #addons-container{display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
     .card{width:300px;background:linear-gradient(180deg, rgba(20,6,40,0.75), rgba(8,2,20,0.6));border-radius:12px;padding:14px;border:1px solid rgba(120,80,200,0.08);box-shadow:0 6px 22px rgba(90,40,180,0.06);transition:transform .28s,box-shadow .28s;cursor: pointer}
     .card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(90,40,180,0.14)}
@@ -100,6 +103,11 @@
     .card .cta{margin-top:10px;display:flex;gap:8px;justify-content:center}
     .btn{padding:8px 12px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--violet),var(--violet-2));color:#000;font-weight:700;cursor:pointer}
     .btn.secondary{background:transparent;border:1px solid rgba(180,140,255,0.08);color:#eaf4ff}
+
+    .rating{display:flex;gap:4px;justify-content:center;margin-top:8px}
+    .star{font-size:1.1rem;cursor:pointer;opacity:0.85;filter:drop-shadow(0 0 6px rgba(90,40,180,0.15))}
+    .star.fill{color:gold;text-shadow:0 0 8px gold}
+    .avg-score{font-size:0.9rem;color:rgba(230,230,255,0.9);margin-left:8px}
 
     /* Popup */
     #popup{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8));z-index:3000;padding:20px}
@@ -146,7 +154,7 @@
       <a href="#"><span class="icon">💡</span><span class="label">Giới thiệu</span></a>
     </nav>
 
-    <!-- admin tools hidden by default -->
+    <!-- Admin Tools (hidden until admin) -->
     <div id="admin-tools" class="admin-tools" aria-hidden="true">
       <div style="padding:8px 12px;color:var(--violet-2);font-weight:700">⚙️ Admin Tools</div>
       <div class="tool"><div>➕ Thêm Addon</div><button class="btn" onclick="openAddForm()">Mở</button></div>
@@ -174,6 +182,9 @@
 
   <!-- Main -->
   <main>
+    <div class="search-row">
+      <input id="searchInput" class="search-input" placeholder="Tìm addon theo tên hoặc mô tả..." oninput="applyFilter()" />
+    </div>
     <section id="addons-container" aria-live="polite"></section>
   </main>
 
@@ -204,20 +215,20 @@
     </div>
   </div>
 
-  <footer>© 2025 MCPExNghia | Neon Deluxe • Local comments only</footer>
+  <footer>© 2025 MCPExNghia | Neon Deluxe • Local comments & ratings only</footer>
 
 <script>
   const SECRET_KEY = 'mcpexnghia2025';
   let addons = [];
   let currentPopupIndex = null;
   let isAdmin = false;
+  let currentFilter = '';
 
   function toggleSidebar(){
     document.getElementById('sidebar').classList.toggle('active');
   }
 
   function openAddForm(){
-    // simple inline form in admin tools to add an addon quickly
     const html = `
       <div style="padding:8px">
         <input id="newName" placeholder="Tên addon" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;background:transparent;border:1px solid rgba(180,140,255,0.06);color:#fff" />
@@ -230,7 +241,6 @@
         </div>
       </div>
     `;
-    // append at top of admin-tools
     const adminTools = document.getElementById('admin-tools');
     const container = document.createElement('div');
     container.innerHTML = html;
@@ -244,11 +254,9 @@
     const link = document.getElementById('newLink').value.trim();
     if(!name||!img){ alert('Vui lòng điền ít nhất tên và URL ảnh'); return; }
     const obj = {name,description:desc||'No description',image:img,download:link||'#'};
-    // push and render; also store in localStorage so it persists per browser
     const custom = JSON.parse(localStorage.getItem('addons_custom')||'[]');
     custom.push(obj);
     localStorage.setItem('addons_custom', JSON.stringify(custom));
-    // refresh source
     loadAddons();
     alert('✅ Addon mới đã được thêm (lưu local).');
   }
@@ -284,30 +292,106 @@
     }
   }
 
+  // Search filtering
+  function applyFilter(){
+    currentFilter = document.getElementById('searchInput').value.trim().toLowerCase();
+    renderAddons();
+  }
+
+  // Ratings storage helpers
+  function ratingsKey(index){ return 'ratings_addon_'+index; }
+  function userRatingKey(index){ return 'rating_user_'+index; }
+
+  function getRatings(index){
+    const raw = localStorage.getItem(ratingsKey(index));
+    if(!raw) return {sum:0,count:0,user:null};
+    try{ return JSON.parse(raw);}catch(e){ return {sum:0,count:0,user:null};}
+  }
+  function saveRatings(index,obj){
+    localStorage.setItem(ratingsKey(index), JSON.stringify(obj));
+  }
+  function getUserRating(index){
+    const raw = localStorage.getItem(userRatingKey(index));
+    return raw?Number(raw):null;
+  }
+  function setUserRating(index, val){
+    localStorage.setItem(userRatingKey(index), String(val));
+  }
+
+  function rateAddon(index, value){
+    const r = getRatings(index);
+    const prev = getUserRating(index);
+    if(prev){
+      r.sum = r.sum - prev + value;
+    } else {
+      r.sum += value;
+      r.count += 1;
+    }
+    setUserRating(index, value);
+    saveRatings(index, r);
+    renderAddons();
+    if(currentPopupIndex===index){
+      renderPopupRating(index);
+    }
+  }
+
+  function renderRatingStars(containerEl, index, small=false){
+    const r = getRatings(index);
+    const avg = r.count? (r.sum / r.count):0;
+    const user = getUserRating(index);
+    containerEl.innerHTML = '';
+    for(let s=1;s<=5;s++){
+      const span = document.createElement('span');
+      span.className = 'star' + ((user && s<=user) || (!user && Math.round(avg)>=s) ? ' fill':'');
+      span.innerText = '★';
+      span.title = (user? 'Bạn đã đánh giá: '+ (user):('Đánh giá '+s+' sao'));
+      span.onclick = (e)=>{ e.stopPropagation(); rateAddon(index,s); };
+      containerEl.appendChild(span);
+    }
+    const avgEl = document.createElement('span');
+    avgEl.className='avg-score';
+    avgEl.innerText = r.count? (' ' + ( (r.sum/r.count).toFixed(1) + ' ('+ r.count +' lượt)')) : ' Chưa có đánh giá';
+    containerEl.appendChild(avgEl);
+  }
+
+  function renderPopupRating(index){
+    const ratingContainer = document.getElementById('popupRating');
+    if(!ratingContainer){
+      const node = document.createElement('div');
+      node.id = 'popupRating';
+      node.style.marginTop = '8px';
+      document.querySelector('.popup-meta div').appendChild(node);
+    }
+    renderRatingStars(document.getElementById('popupRating'), index);
+  }
+
   function renderAddons(){
     const container = document.getElementById('addons-container');
     container.innerHTML = '';
-    const merged = [...addons];
-    // merge custom local addons
-    const custom = JSON.parse(localStorage.getItem('addons_custom')||'[]');
-    merged.push(...custom);
+    const merged = [...addons].concat(JSON.parse(localStorage.getItem('addons_custom')||'[]'));
     merged.forEach((a,i)=>{
+      const q = currentFilter;
+      if(q){
+        const hay = (a.name + ' ' + (a.description||'')).toLowerCase();
+        if(!hay.includes(q)) return;
+      }
       const div = document.createElement('div');
       div.className='card';
       div.innerHTML = `
         <img src="${a.image}" alt="${a.name}" loading="lazy" />
         <h3>${a.name}</h3>
-        <p>${a.description}</p>
+        <p>${a.description||''}</p>
         <div class="cta">
           <button class="btn" onclick="openPopup(${i})">Chi tiết</button>
           <a class="btn secondary" href="${a.download||'#'}" target="_blank">⬇️ Tải</a>
         </div>
+        <div class="rating" id="rating_card_${i}"></div>
       `;
       container.appendChild(div);
+      renderRatingStars(document.getElementById('rating_card_'+i), i, true);
     });
   }
 
-  // load initial addons.json then render
   async function loadAddons(){
     try{
       const res = await fetch('addons.json',{cache:'no-cache'});
@@ -320,7 +404,6 @@
     renderAddons();
   }
 
-  // Popup logic with comments per addon (index relative to merged list)
   function openPopup(index){
     currentPopupIndex = index;
     const merged = [...addons].concat(JSON.parse(localStorage.getItem('addons_custom')||'[]'));
@@ -331,11 +414,12 @@
     document.getElementById('popupDesc').innerText = a.description || '';
     document.getElementById('popupLink').href = a.download || '#';
     document.getElementById('popup').style.display = 'flex';
+    renderPopupRating(index);
     loadCommentsFor(index);
+    document.querySelector('.comment-list').scrollTop = 0;
   }
   function closePopup(){ document.getElementById('popup').style.display='none'; currentPopupIndex=null; }
 
-  // comments stored localStorage under key comments_<index> so each addon in merged list has its own
   function getCommentsKey(index){ return 'comments_addon_'+index; }
   function loadCommentsFor(index){
     const key = getCommentsKey(index);
@@ -362,31 +446,19 @@
     loadCommentsFor(currentPopupIndex);
   }
 
-  // basic escaping to avoid HTML injection in comments
-  function escapeHtml(s){ return s.replace(/[&<>"'`]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;',"`":'&#96;'}[m]; }); }
-
-  // Toggle sidebar on menu icon click
-  function toggleSidebar(){
-    const sb = document.getElementById('sidebar');
-    sb.classList.toggle('active');
-  }
+  function escapeHtml(s){ return String(s).replace(/[&<>"'`]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;',"`":'&#96;'}[m]; }); }
 
   // initial load
   window.addEventListener('load', ()=>{
-    // hide intro after animation (already set with CSS)
     setTimeout(()=>{ document.getElementById('intro').style.display='none'; }, 2200);
-    // no prompt for key on load (per request)
     loadAddons();
-    // apply default theme
     applyTheme('violet');
   });
 
-  // close popup when clicking outside card
   document.getElementById('popup').addEventListener('click', (e)=>{
     if(e.target.id==='popup') closePopup();
   });
 
-  // accessibility: close sidebar with Escape
   document.addEventListener('keydown', (e)=>{
     if(e.key==='Escape'){
       const sb = document.getElementById('sidebar');
