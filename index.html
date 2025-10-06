@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🤖 MCPExNghia Robot UI</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
@@ -51,33 +51,29 @@
 
     /* Header */
     header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
       background: rgba(0, 20, 40, 0.95);
       border-bottom: 2px solid #00f0ff;
       box-shadow: 0 0 20px #00ccff;
-      padding: 12px;
+      padding: 15px;
       position: sticky;
       top: 0;
       z-index: 100;
+      text-align: center;
     }
     header h1 {
       color: #00f0ff;
-      margin: 0;
       font-size: 1.5em;
+      margin: 0;
       text-shadow: 0 0 10px #00f0ff, 0 0 20px #00ccff;
     }
     .menu-icon {
       position: absolute;
       left: 15px;
-      font-size: 1.8em;
-      color: #00f0ff;
+      top: 15px;
+      font-size: 24px;
       cursor: pointer;
-      transition: 0.3s;
+      color: #00f0ff;
     }
-    .menu-icon:hover { transform: scale(1.2); }
 
     /* Sidebar */
     #sidebar {
@@ -90,9 +86,8 @@
       border-right: 1px solid #00f0ff;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       padding-top: 60px;
-      transition: left 0.4s ease;
+      transition: left 0.3s ease;
       z-index: 1000;
     }
     #sidebar.active { left: 0; }
@@ -100,9 +95,7 @@
       color: #a8ffff;
       text-decoration: none;
       padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: block;
       transition: 0.3s;
     }
     #sidebar a:hover {
@@ -110,22 +103,15 @@
       color: #fff;
       text-shadow: 0 0 10px #00f0ff;
     }
-    #sidebar a span { font-size: 1.2em; }
 
     /* Close button */
     .close-btn {
       position: absolute;
       top: 15px;
       right: 15px;
-      font-size: 1.5em;
-      color: #ff6688;
+      font-size: 20px;
       cursor: pointer;
-      transition: 0.3s;
-    }
-    .close-btn:hover {
-      color: #fff;
-      transform: scale(1.2);
-      text-shadow: 0 0 10px #ff66ff, 0 0 20px #ff33cc;
+      color: #f66;
     }
 
     /* Admin login */
@@ -179,21 +165,7 @@
       padding: 18px;
       box-shadow: 0 0 20px #00f0ff40;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
-    .card::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(120deg, transparent, #00f0ff40, transparent);
-      transform: rotate(25deg);
-      transition: 0.5s;
-    }
-    .card:hover::before { left: 0; top: 0; }
     .card:hover {
       transform: translateY(-8px) scale(1.05);
       box-shadow: 0 0 25px #00f0ff;
@@ -280,10 +252,10 @@
   <!-- Sidebar -->
   <div id="sidebar">
     <div class="close-btn" onclick="toggleSidebar()">✖</div>
-    <a href="#"><span>🏠</span> Trang chủ</a>
-    <a href="#addons-container"><span>🧩</span> Addons</a>
-    <a href="#"><span>📞</span> Liên hệ</a>
-    <a href="#"><span>💡</span> Giới thiệu</a>
+    <a href="#">🏠 Trang chủ</a>
+    <a href="#addons-container">🧩 Addons</a>
+    <a href="#">📞 Liên hệ</a>
+    <a href="#">💡 Giới thiệu</a>
 
     <!-- Login form -->
     <div id="admin-login">
@@ -293,10 +265,10 @@
 
     <!-- Admin tools -->
     <div id="admin-section">
-      <a href="#"><span>⚙️</span> Admin Tools</a>
-      <a href="#"><span>➕</span> Thêm Addon</a>
-      <a href="#"><span>🎨</span> Đổi Theme</a>
-      <a href="#" onclick="logoutAdmin()"><span>🚪</span> Đăng xuất</a>
+      <a href="#">⚙️ Admin Tools</a>
+      <a href="#">➕ Thêm Addon</a>
+      <a href="#">🎨 Đổi Theme</a>
+      <a href="#" onclick="logoutAdmin()">🚪 Đăng xuất</a>
     </div>
   </div>
 
@@ -329,9 +301,13 @@
     }
 
     async function loadAddons() {
-      const res = await fetch("addons.json");
-      addons = await res.json();
-      renderAddons();
+      try {
+        const res = await fetch("addons.json");
+        addons = await res.json();
+        renderAddons();
+      } catch (e) {
+        console.log("Không tải được addons.json");
+      }
     }
 
     function renderAddons() {
@@ -357,7 +333,9 @@
       document.getElementById("popup").style.display = "flex";
     }
 
-    function closePopup() { document.getElementById("popup").style.display = "none"; }
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
 
     function checkKey() {
       let key = document.getElementById("adminKey").value;
@@ -384,3 +362,4 @@
   </script>
 </body>
 </html>
+ 
