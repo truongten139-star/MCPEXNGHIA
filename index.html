@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -25,26 +25,28 @@
       justify-content: center;
       background: radial-gradient(circle at center, #3b0066, #000);
       z-index: 9999;
-      animation: fadeOut 2s ease 2s forwards;
+      animation: introZoom 2s ease forwards;
     }
     #intro h1 {
       color: #b366ff;
-      text-shadow: 0 0 10px #b366ff, 0 0 30px #c999ff;
-      font-size: 2.3em;
+      text-shadow: 0 0 15px #b366ff, 0 0 30px #c999ff;
+      font-size: 2.5em;
       margin: 0;
-      animation: glow 2s ease-in-out infinite alternate;
+      animation: glowPulse 1.5s ease-in-out infinite alternate;
     }
     #intro p {
       margin-top: 10px;
       color: #ddaaff;
       letter-spacing: 2px;
     }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #b366ff; }
-      to { text-shadow: 0 0 30px #c999ff; }
+    @keyframes introZoom {
+      0% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0; visibility: hidden; transform: scale(1); }
     }
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 15px #b366ff, 0 0 30px #c999ff; }
+      to { text-shadow: 0 0 30px #c999ff, 0 0 60px #ff66ff; }
     }
 
     /* Header */
@@ -107,13 +109,35 @@
       background: rgba(180, 100, 255, 0.2);
       color: #fff;
     }
+    #sidebar a span {
+      font-size: 1.2em;
+    }
+
+    /* Admin login */
+    #admin-login {
+      padding: 15px;
+      border-top: 1px solid #b366ff;
+    }
+    #admin-login input {
+      width: 80%;
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 8px;
+    }
+    #admin-login button {
+      background: linear-gradient(90deg, #b366ff, #c999ff);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
     #admin-section {
       border-top: 1px solid #b366ff;
       margin-top: 10px;
       display: none;
-    }
-    #sidebar a span {
-      font-size: 1.2em;
     }
 
     /* Addons */
@@ -224,6 +248,14 @@
     <a href="#addons-container"><span>🧩</span> Addons</a>
     <a href="#"><span>📞</span> Liên hệ</a>
     <a href="#"><span>💡</span> Giới thiệu</a>
+
+    <!-- Login form -->
+    <div id="admin-login">
+      <input type="password" id="adminKey" placeholder="🔑 Nhập key admin">
+      <button onclick="checkKey()">Đăng nhập</button>
+    </div>
+
+    <!-- Admin tools -->
     <div id="admin-section">
       <a href="#"><span>⚙️</span> Admin Tools</a>
       <a href="#"><span>➕</span> Thêm Addon</a>
@@ -291,23 +323,28 @@
 
     function closePopup() { document.getElementById("popup").style.display = "none"; }
 
+    function checkKey() {
+      let key = document.getElementById("adminKey").value;
+      if (key === SECRET_KEY) {
+        isAdmin = true;
+        document.getElementById("admin-section").style.display = "block";
+        document.getElementById("admin-login").style.display = "none";
+        alert("✅ Đăng nhập admin thành công!");
+      } else {
+        alert("❌ Sai key!");
+      }
+    }
+
     function logoutAdmin() {
       isAdmin = false;
       document.getElementById("admin-section").style.display = "none";
+      document.getElementById("admin-login").style.display = "block";
       alert("🚪 Đã đăng xuất admin!");
     }
 
-    // Kiểm tra key admin
+    // Load addons khi vào web
     window.onload = function() {
-      setTimeout(() => {
-        let key = prompt("🔑 Nhập key admin (bỏ qua nếu bạn là khách):");
-        if (key === SECRET_KEY) {
-          isAdmin = true;
-          document.getElementById("admin-section").style.display = "block";
-          alert("✅ Đăng nhập admin thành công!");
-        }
-        loadAddons();
-      }, 2000);
+      loadAddons();
     };
   </script>
 </body>
