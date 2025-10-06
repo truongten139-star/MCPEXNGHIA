@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🤖 MCPExNghia Robot UI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCPExNghia Addons</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
     body {
       font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at top, #02050a 0%, #000 100%);
-      color: #00f0ff;
+      background: radial-gradient(circle at top, #0a0018 0%, #000 100%);
+      color: #fff;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
     }
 
-    /* Intro */
+    / Intro /
     #intro {
       position: fixed;
       inset: 0;
@@ -23,101 +23,100 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #000;
+      background: radial-gradient(circle at center, #3b0066, #000);
       z-index: 9999;
-      animation: introScan 2.5s ease forwards;
+      animation: introZoom 2s ease forwards;
     }
     #intro h1 {
-      color: #00f0ff;
-      font-size: 2.3em;
+      color: #b366ff;
+      text-shadow: 0 0 15px #b366ff, 0 0 30px #c999ff;
+      font-size: 2.5em;
       margin: 0;
-      text-shadow: 0 0 10px #00f0ff, 0 0 30px #00ccff;
       animation: glowPulse 1.5s ease-in-out infinite alternate;
     }
     #intro p {
       margin-top: 10px;
-      color: #88ffff;
+      color: #ddaaff;
       letter-spacing: 2px;
     }
-    @keyframes introScan {
+    @keyframes introZoom {
       0% { opacity: 0; transform: scale(0.8); }
-      40% { opacity: 1; transform: scale(1.05); }
+      50% { opacity: 1; transform: scale(1.05); }
       100% { opacity: 0; visibility: hidden; transform: scale(1); }
     }
     @keyframes glowPulse {
-      from { text-shadow: 0 0 10px #00f0ff; }
-      to { text-shadow: 0 0 30px #00ffff, 0 0 60px #00f0ff; }
+      from { text-shadow: 0 0 15px #b366ff, 0 0 30px #c999ff; }
+      to { text-shadow: 0 0 30px #c999ff, 0 0 60px #ff66ff; }
     }
 
-    /* Header */
+    / Header /
     header {
-      background: rgba(0, 20, 40, 0.95);
-      border-bottom: 2px solid #00f0ff;
-      box-shadow: 0 0 20px #00ccff;
-      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(20, 0, 40, 0.9);
+      border-bottom: 2px solid #b366ff;
+      box-shadow: 0 0 20px #c999ff;
+      padding: 12px;
       position: sticky;
       top: 0;
       z-index: 100;
-      text-align: center;
     }
     header h1 {
-      color: #00f0ff;
-      font-size: 1.5em;
+      color: #dcb0ff;
+      text-shadow: 0 0 15px #c999ff;
       margin: 0;
-      text-shadow: 0 0 10px #00f0ff, 0 0 20px #00ccff;
+      font-size: 1.5em;
     }
     .menu-icon {
       position: absolute;
       left: 15px;
-      top: 15px;
-      font-size: 24px;
+      font-size: 1.8em;
+      color: #c999ff;
       cursor: pointer;
-      color: #00f0ff;
+      transition: 0.3s;
     }
+    .menu-icon:hover { transform: scale(1.2); }
 
-    /* Sidebar */
+    / Sidebar /
     #sidebar {
       position: fixed;
       top: 0; left: -260px;
       width: 250px;
       height: 100%;
-      background: #010b12;
-      box-shadow: 0 0 25px #00ccff;
-      border-right: 1px solid #00f0ff;
+      background: rgba(50, 0, 80, 0.95);
+      box-shadow: 0 0 30px #c999ff;
+      border-right: 1px solid #b366ff;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       padding-top: 60px;
-      transition: left 0.3s ease;
+      transition: left 0.4s ease;
       z-index: 1000;
     }
     #sidebar.active { left: 0; }
     #sidebar a {
-      color: #a8ffff;
+      color: #e5ccff;
       text-decoration: none;
       padding: 15px 20px;
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       transition: 0.3s;
     }
     #sidebar a:hover {
-      background: rgba(0, 240, 255, 0.1);
+      background: rgba(180, 100, 255, 0.2);
       color: #fff;
-      text-shadow: 0 0 10px #00f0ff;
+    }
+    #sidebar a span {
+      font-size: 1.2em;
     }
 
-    /* Close button */
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 20px;
-      cursor: pointer;
-      color: #f66;
-    }
-
-    /* Admin login */
+    / Admin login /
     #admin-login {
       padding: 15px;
-      border-top: 1px solid #00f0ff;
+      border-top: 1px solid #b366ff;
     }
     #admin-login input {
       width: 80%;
@@ -127,26 +126,21 @@
       margin-bottom: 8px;
     }
     #admin-login button {
-      background: transparent;
-      border: 2px solid #00f0ff;
-      color: #00f0ff;
-      padding: 6px 12px;
+      background: linear-gradient(90deg, #b366ff, #c999ff);
+      border: none;
       border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    #admin-login button:hover {
-      background: #00f0ff;
+      padding: 6px 10px;
       color: #000;
-      box-shadow: 0 0 15px #00f0ff;
+      font-weight: bold;
+      cursor: pointer;
     }
     #admin-section {
-      border-top: 1px solid #00f0ff;
+      border-top: 1px solid #b366ff;
       margin-top: 10px;
       display: none;
     }
 
-    /* Addons */
+    / Addons /
     #addons-container {
       display: flex;
       flex-wrap: wrap;
@@ -157,54 +151,54 @@
       margin: auto;
     }
     .card {
-      background: rgba(0, 15, 25, 0.95);
-      border: 1px solid #00f0ff;
+      background: linear-gradient(180deg, rgba(40,0,60,0.9), rgba(10,0,20,0.8));
+      border: 1px solid #b366ff;
       border-radius: 15px;
       width: 270px;
       text-align: center;
       padding: 18px;
-      box-shadow: 0 0 20px #00f0ff40;
+      box-shadow: 0 0 20px #b366ff40;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
       transform: translateY(-8px) scale(1.05);
-      box-shadow: 0 0 25px #00f0ff;
+      box-shadow: 0 0 25px #c999ff;
     }
     .card img {
       width: 100%;
       border-radius: 10px;
       margin-bottom: 10px;
-      box-shadow: 0 0 10px #00f0ff80;
+      box-shadow: 0 0 10px #c999ff80;
     }
-    .card h3 { color: #00f0ff; margin: 8px 0; }
-    .card p { font-size: 0.9em; color: #a8ffff; }
+    .card h3 { color: #dcb0ff; margin: 8px 0; }
+    .card p { font-size: 0.9em; color: #e6ccff; }
     .card button {
-      background: transparent;
-      border: 2px solid #00f0ff;
+      background: linear-gradient(90deg, #b366ff, #c999ff);
+      border: none;
       border-radius: 8px;
       padding: 8px 12px;
-      color: #00f0ff;
+      color: #000;
       font-weight: bold;
       cursor: pointer;
       margin-top: 10px;
       transition: 0.3s;
     }
-    .card button:hover { background: #00f0ff; color: #000; }
+    .card button:hover { box-shadow: 0 0 10px #c999ff; }
 
-    /* Popup */
+    / Popup /
     #popup {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.85);
       justify-content: center;
       align-items: center;
       z-index: 999;
     }
     #popup .content {
-      background: #010b12;
-      border: 2px solid #00f0ff;
-      box-shadow: 0 0 20px #00f0ff;
+      background: #180030;
+      border: 2px solid #b366ff;
+      box-shadow: 0 0 20px #c999ff;
       border-radius: 15px;
       padding: 20px;
       text-align: center;
@@ -214,48 +208,46 @@
     }
     #popup img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
     #popup button {
-      background: transparent;
-      border: 2px solid #00f0ff;
+      background: linear-gradient(90deg, #b366ff, #c999ff);
+      border: none;
       border-radius: 8px;
       padding: 8px 12px;
-      color: #00f0ff;
+      color: #000;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
     }
-    #popup button:hover { background: #00f0ff; color: #000; }
+    #popup button:hover { box-shadow: 0 0 10px #c999ff; }
     @keyframes fadeIn { from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);} }
 
-    /* Footer */
+    / Footer /
     footer {
       text-align: center;
       padding: 20px;
-      color: #00f0ff;
+      color: #dcb0ff;
       font-size: 0.9em;
-      border-top: 1px solid #00f0ff;
+      border-top: 1px solid #b366ff;
       background: #000;
-      box-shadow: 0 -2px 20px #00f0ff60;
+      box-shadow: 0 -2px 20px #b366ff60;
     }
   </style>
 </head>
 <body>
   <div id="intro">
-    <h1>🤖 MCPExNghia Addons</h1>
-    <p>Robot UI Activated...</p>
+    <h1>⚡ MCPExNghia Addons</h1>
+    <p>Neon Deluxe UI</p>
   </div>
 
   <header>
     <div class="menu-icon" onclick="toggleSidebar()">☰</div>
-    <h1>🤖 MCPExNghia Addons</h1>
+    <h1>⚡ MCPExNghia Addons</h1>
   </header>
 
   <!-- Sidebar -->
   <div id="sidebar">
-    <div class="close-btn" onclick="toggleSidebar()">✖</div>
-    <a href="#">🏠 Trang chủ</a>
-    <a href="#addons-container">🧩 Addons</a>
-    <a href="#">📞 Liên hệ</a>
-    <a href="#">💡 Giới thiệu</a>
+    <a href="#"><span>🏠</span> Trang chủ</a>
+    <a href="#addons-container"><span>🧩</span> Addons</a>
+    <a href="#"><span>📞</span> Liên hệ</a>
+    <a href="#"><span>💡</span> Giới thiệu</a>
 
     <!-- Login form -->
     <div id="admin-login">
@@ -265,10 +257,10 @@
 
     <!-- Admin tools -->
     <div id="admin-section">
-      <a href="#">⚙️ Admin Tools</a>
-      <a href="#">➕ Thêm Addon</a>
-      <a href="#">🎨 Đổi Theme</a>
-      <a href="#" onclick="logoutAdmin()">🚪 Đăng xuất</a>
+      <a href="#"><span>⚙️</span> Admin Tools</a>
+      <a href="#"><span>➕</span> Thêm Addon</a>
+      <a href="#"><span>🎨</span> Đổi Theme</a>
+      <a href="#" onclick="logoutAdmin()"><span>🚪</span> Đăng xuất</a>
     </div>
   </div>
 
@@ -289,7 +281,7 @@
     </div>
   </div>
 
-  <footer>© 2025 MCPExNghia | Robot UI 🤖</footer>
+  <footer>© 2025 MCPExNghia | Neon Deluxe UI 💜</footer>
 
   <script>
     const SECRET_KEY = "mcpexnghia2025";
@@ -301,13 +293,9 @@
     }
 
     async function loadAddons() {
-      try {
-        const res = await fetch("addons.json");
-        addons = await res.json();
-        renderAddons();
-      } catch (e) {
-        console.log("Không tải được addons.json");
-      }
+      const res = await fetch("addons.json");
+      addons = await res.json();
+      renderAddons();
     }
 
     function renderAddons() {
@@ -333,9 +321,7 @@
       document.getElementById("popup").style.display = "flex";
     }
 
-    function closePopup() {
-      document.getElementById("popup").style.display = "none";
-    }
+    function closePopup() { document.getElementById("popup").style.display = "none"; }
 
     function checkKey() {
       let key = document.getElementById("adminKey").value;
@@ -343,7 +329,7 @@
         isAdmin = true;
         document.getElementById("admin-section").style.display = "block";
         document.getElementById("admin-login").style.display = "none";
-        alert("🤖 Xin chào Admin. Hệ thống đã sẵn sàng.");
+        alert("✅ Đăng nhập admin thành công!");
       } else {
         alert("❌ Sai key!");
       }
@@ -356,6 +342,7 @@
       alert("🚪 Đã đăng xuất admin!");
     }
 
+    // Load addons khi vào web
     window.onload = function() {
       loadAddons();
     };
