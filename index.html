@@ -1,314 +1,402 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MCPExNghia Addons</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MCPExNghia Addons - Neon Final</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
-    body {
+    :root{
+      --violet:#8a3cff;
+      --violet-2:#5bd0ff; /* cyan accent */
+      --bg:#050006;
+      --card:#110018;
+      --glass: rgba(20,8,30,0.6);
+    }
+    html,body{height:100%;margin:0;background:
+      radial-gradient(circle at 10% 10%, rgba(20,6,40,0.6), transparent 15%),
+      radial-gradient(circle at 90% 90%, rgba(0,20,40,0.25), transparent 15%),
+      var(--bg);
+      color:#e8eef8;
       font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at top, #0a0018 0%, #000 100%);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-
     /* Intro */
-    #intro {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at center, #3b0066, #000);
-      z-index: 9999;
-      animation: fadeOut 2s ease 2s forwards;
+    #intro{
+      position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:linear-gradient(180deg, rgba(12,2,30,0.98), rgba(0,0,0,0.95));
+      z-index:9999;
+      animation:introHide 2s forwards;
     }
-    #intro h1 {
-      color: #b366ff;
-      text-shadow: 0 0 10px #b366ff, 0 0 30px #c999ff;
-      font-size: 2.3em;
-      margin: 0;
-      animation: glow 2s ease-in-out infinite alternate;
+    #intro h1{
+      color:var(--violet);
+      font-size:2.6rem;
+      margin:0;
+      text-shadow:0 0 12px var(--violet),0 0 30px var(--violet-2);
+      letter-spacing:1px;
+      animation:glow 1.6s ease-in-out infinite alternate;
     }
-    #intro p {
-      margin-top: 10px;
-      color: #ddaaff;
-      letter-spacing: 2px;
+    #intro p{margin-top:10px;color:rgba(150,200,255,0.9)}
+    @keyframes glow{
+      from{text-shadow:0 0 8px var(--violet);}
+      to{text-shadow:0 0 28px var(--violet-2);}
     }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #b366ff; }
-      to { text-shadow: 0 0 30px #c999ff; }
-    }
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
+    @keyframes introHide{
+      0%{opacity:1}
+      85%{opacity:1}
+      100%{opacity:0;visibility:hidden}
     }
 
     /* Header */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: rgba(20, 0, 40, 0.9);
-      border-bottom: 2px solid #b366ff;
-      box-shadow: 0 0 20px #c999ff;
-      padding: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    header{
+      position:sticky;top:0;z-index:50;
+      display:flex;align-items:center;justify-content:center;padding:12px;background:linear-gradient(90deg, rgba(8,2,20,0.6), rgba(10,4,30,0.6));
+      border-bottom:1px solid rgba(120,80,200,0.08);
+      box-shadow:0 2px 20px rgba(80,30,140,0.06);
     }
-    header h1 {
-      color: #dcb0ff;
-      text-shadow: 0 0 15px #c999ff;
-      margin: 0;
-      font-size: 1.5em;
+    header h1{margin:0;color:var(--violet);text-shadow:0 0 8px rgba(90,40,180,0.4);}
+    .menu-icon{
+      position:absolute;left:16px;font-size:1.6rem;color:var(--violet-2);cursor:pointer;user-select:none;
     }
-    .menu-icon {
-      position: absolute;
-      left: 15px;
-      font-size: 1.8em;
-      color: #c999ff;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .menu-icon:hover { transform: scale(1.2); }
+    .menu-icon:hover{transform:scale(1.08)}
 
     /* Sidebar */
-    #sidebar {
-      position: fixed;
-      top: 0; left: -260px;
-      width: 250px;
-      height: 100%;
-      background: rgba(50, 0, 80, 0.95);
-      box-shadow: 0 0 30px #c999ff;
-      border-right: 1px solid #b366ff;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 60px;
-      transition: left 0.4s ease;
-      z-index: 1000;
+    #sidebar{
+      position:fixed;left:-280px;top:0;height:100%;width:280px;
+      background:linear-gradient(180deg, rgba(18,6,36,0.98), rgba(6,2,18,0.98));
+      box-shadow: 8px 0 40px rgba(90,40,180,0.18);
+      border-right:1px solid rgba(120,80,200,0.12);
+      transition:left .36s cubic-bezier(.2,.9,.2,1);
+      z-index:2000;padding-top:24px;display:flex;flex-direction:column;
     }
-    #sidebar.active { left: 0; }
-    #sidebar a {
-      color: #e5ccff;
-      text-decoration: none;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: 0.3s;
-    }
-    #sidebar a:hover {
-      background: rgba(180, 100, 255, 0.2);
-      color: #fff;
-    }
-    #admin-section {
-      border-top: 1px solid #b366ff;
-      margin-top: 10px;
-      display: none;
-    }
-    #sidebar a span {
-      font-size: 1.2em;
-    }
+    #sidebar.active{left:0}
+    #sidebar .close-btn{position:absolute;right:10px;top:10px;background:transparent;border:none;color:var(--violet-2);font-size:1.4rem;cursor:pointer}
+    #sidebar nav{display:flex;flex-direction:column;gap:6px;padding:10px 8px}
+    #sidebar a{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:8px;color:#e8e8ff;text-decoration:none;margin:6px 8px;transition:background .2s}
+    #sidebar a:hover{background:linear-gradient(90deg, rgba(120,80,200,0.08), rgba(80,40,180,0.04));}
+    #sidebar .icon{font-size:1.2rem;opacity:0.95}
+    #sidebar .label{font-size:0.96rem}
 
-    /* Addons */
-    #addons-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
-      padding: 40px 15px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .card {
-      background: linear-gradient(180deg, rgba(40,0,60,0.9), rgba(10,0,20,0.8));
-      border: 1px solid #b366ff;
-      border-radius: 15px;
-      width: 270px;
-      text-align: center;
-      padding: 18px;
-      box-shadow: 0 0 20px #b366ff40;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-8px) scale(1.05);
-      box-shadow: 0 0 25px #c999ff;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 0 10px #c999ff80;
-    }
-    .card h3 { color: #dcb0ff; margin: 8px 0; }
-    .card p { font-size: 0.9em; color: #e6ccff; }
-    .card button {
-      background: linear-gradient(90deg, #b366ff, #c999ff);
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.3s;
-    }
-    .card button:hover { box-shadow: 0 0 10px #c999ff; }
+    /* Admin Access box at bottom */
+    #admin-access{margin-top:auto;padding:12px;border-top:1px solid rgba(120,80,200,0.06)}
+    .admin-box{display:flex;flex-direction:column;gap:8px;padding:8px 10px}
+    .admin-input{padding:8px;border-radius:8px;border:1px solid rgba(180,140,255,0.12);background:transparent;color:#fff;outline:none}
+    .admin-btn{padding:8px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--violet),var(--violet-2));color:#000;font-weight:700;cursor:pointer}
+
+    /* Admin Tools (hidden until admin) */
+    #admin-tools{display:none;margin-top:8px;padding:8px 6px}
+    .admin-tools .tool{padding:8px 10px;border-radius:8px;margin:6px 8px;background:rgba(120,80,200,0.04);display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .admin-tools input{padding:8px;border-radius:6px;border:1px solid rgba(180,140,255,0.08);background:transparent;color:#fff}
+
+    /* Main area */
+    main{padding:28px 16px 80px;max-width:1100px;margin:0 auto;}
+    #addons-container{display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
+    .card{width:300px;background:linear-gradient(180deg, rgba(20,6,40,0.75), rgba(8,2,20,0.6));border-radius:12px;padding:14px;border:1px solid rgba(120,80,200,0.08);box-shadow:0 6px 22px rgba(90,40,180,0.06);transition:transform .28s,box-shadow .28s;cursor: pointer}
+    .card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(90,40,180,0.14)}
+    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(30,10,80,0.18)}
+    .card h3{margin:10px 0 6px;color:var(--violet-2)}
+    .card p{margin:0;color:rgba(220,220,255,0.9);font-size:0.95rem;height:44px;overflow:hidden}
+    .card .cta{margin-top:10px;display:flex;gap:8px;justify-content:center}
+    .btn{padding:8px 12px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--violet),var(--violet-2));color:#000;font-weight:700;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid rgba(180,140,255,0.08);color:#eaf4ff}
 
     /* Popup */
-    #popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    #popup .content {
-      background: #180030;
-      border: 2px solid #b366ff;
-      box-shadow: 0 0 20px #c999ff;
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-      animation: fadeIn 0.4s;
-    }
-    #popup img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
-    #popup button {
-      background: linear-gradient(90deg, #b366ff, #c999ff);
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    #popup button:hover { box-shadow: 0 0 10px #c999ff; }
-    @keyframes fadeIn { from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);} }
+    #popup{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8));z-index:3000;padding:20px}
+    .popup-card{width:100%;max-width:680px;background:linear-gradient(180deg, rgba(18,2,36,0.98), rgba(6,2,18,0.98));border-radius:12px;padding:18px;border:1px solid rgba(120,80,200,0.1);box-shadow:0 30px 80px rgba(30,8,60,0.6)}
+    .popup-card img{width:100%;height:300px;object-fit:cover;border-radius:8px}
+    .popup-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
+    .comments{margin-top:12px;padding-top:12px;border-top:1px dashed rgba(120,80,200,0.06)}
+    .comment-list{max-height:180px;overflow:auto;margin-top:8px;display:flex;flex-direction:column;gap:8px}
+    .comment{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;border:1px solid rgba(120,80,200,0.04)}
+    .comment .meta{font-size:0.8rem;color:rgba(200,200,255,0.7)}
+    .comment .body{margin-top:6px;color:#e8eef8}
 
     /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #dcb0ff;
-      font-size: 0.9em;
-      border-top: 1px solid #b366ff;
-      background: #000;
-      box-shadow: 0 -2px 20px #b366ff60;
+    footer{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(90deg, rgba(6,2,20,0.6), rgba(20,6,40,0.6));border-top:1px solid rgba(120,80,200,0.06);text-align:center;color:rgba(200,200,255,0.9);font-size:0.9rem}
+
+    /* Responsive */
+    @media (max-width:720px){
+      .card{width:90%}
+      #sidebar{width:86%;left:-100%}
+      #sidebar.active{left:0}
     }
   </style>
 </head>
 <body>
-  <div id="intro">
+  <!-- Intro -->
+  <div id="intro" aria-hidden="true">
     <h1>⚡ MCPExNghia Addons</h1>
-    <p>Neon Deluxe UI</p>
+    <p>Neon Deluxe — Cold Violet</p>
   </div>
 
+  <!-- Header -->
   <header>
     <div class="menu-icon" onclick="toggleSidebar()">☰</div>
     <h1>⚡ MCPExNghia Addons</h1>
   </header>
 
   <!-- Sidebar -->
-  <div id="sidebar">
-    <a href="#"><span>🏠</span> Trang chủ</a>
-    <a href="#addons-container"><span>🧩</span> Addons</a>
-    <a href="#"><span>📞</span> Liên hệ</a>
-    <a href="#"><span>💡</span> Giới thiệu</a>
-    <div id="admin-section">
-      <a href="#"><span>⚙️</span> Admin Tools</a>
-      <a href="#"><span>➕</span> Thêm Addon</a>
-      <a href="#"><span>🎨</span> Đổi Theme</a>
-      <a href="#" onclick="logoutAdmin()"><span>🚪</span> Đăng xuất</a>
-    </div>
-  </div>
+  <aside id="sidebar" aria-hidden="true">
+    <button class="close-btn" onclick="toggleSidebar()">✕</button>
+    <nav>
+      <a href="#"><span class="icon">🏠</span><span class="label">Trang chủ</span></a>
+      <a href="#addons-container"><span class="icon">🧩</span><span class="label">Addons</span></a>
+      <a href="#"><span class="icon">📞</span><span class="label">Liên hệ</span></a>
+      <a href="#"><span class="icon">💡</span><span class="label">Giới thiệu</span></a>
+    </nav>
 
-  <!-- Addons -->
-  <div id="addons-container"></div>
+    <!-- admin tools hidden by default -->
+    <div id="admin-tools" class="admin-tools" aria-hidden="true">
+      <div style="padding:8px 12px;color:var(--violet-2);font-weight:700">⚙️ Admin Tools</div>
+      <div class="tool"><div>➕ Thêm Addon</div><button class="btn" onclick="openAddForm()">Mở</button></div>
+      <div class="tool"><div>🎨 Chuyển theme</div><select id="themeSelect" onchange="applyTheme(this.value)" style="background:transparent;color:#fff;border-radius:6px;padding:6px;border:1px solid rgba(180,140,255,0.06)">
+        <option value="violet">Violet Cold</option>
+        <option value="emerald">Emerald</option>
+        <option value="red">Crimson</option>
+      </select></div>
+      <div class="tool"><div>🚪 Đăng xuất</div><button class="btn" onclick="logoutAdmin()">Thoát</button></div>
+    </div>
+
+    <!-- Admin access box at bottom -->
+    <div id="admin-access">
+      <div style="padding:8px 12px;color:rgba(220,220,255,0.9);font-weight:700">🔒 Admin Access</div>
+      <div class="admin-box">
+        <input id="adminKeyInput" class="admin-input" placeholder="Nhập key admin..." />
+        <div style="display:flex;gap:8px">
+          <button class="admin-btn" onclick="tryAdmin()">Xác nhận</button>
+          <button class="admin-btn" style="background:transparent;color:#e8eef8;border:1px solid rgba(180,140,255,0.06)" onclick="toggleSidebar()">Đóng</button>
+        </div>
+        <div id="admin-msg" style="font-size:0.9rem;color:rgba(200,200,255,0.6)"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main>
+    <section id="addons-container" aria-live="polite"></section>
+  </main>
 
   <!-- Popup -->
-  <div id="popup">
-    <div class="content">
-      <img id="popupImg" src="">
-      <h2 id="popupName"></h2>
-      <p id="popupDesc"></p>
-      <a id="popupLink" href="#" target="_blank">
-        <button>⬇️ Tải về</button>
-      </a>
-      <br><br>
-      <button onclick="closePopup()">Đóng</button>
+  <div id="popup" role="dialog" aria-modal="true">
+    <div class="popup-card">
+      <img id="popupImg" src="" alt="Addon image" />
+      <div class="popup-meta">
+        <div>
+          <h2 id="popupName" style="margin:0;color:var(--violet-2)"></h2>
+          <p id="popupDesc" style="margin:6px 0;color:rgba(220,220,255,0.9)"></p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <a id="popupLink" class="btn" href="#" target="_blank">⬇️ Tải về</a>
+          <button class="btn secondary" onclick="closePopup()">Đóng</button>
+        </div>
+      </div>
+
+      <!-- Comments under each addon -->
+      <div class="comments">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="commentName" placeholder="Tên (tùy chọn)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(120,80,200,0.06);background:transparent;color:#fff" />
+          <input id="commentText" placeholder="Viết bình luận..." style="flex:2;padding:8px;border-radius:8px;border:1px solid rgba(120,80,200,0.06);background:transparent;color:#fff" />
+          <button class="btn" onclick="addComment()">Gửi</button>
+        </div>
+        <div class="comment-list" id="commentList"></div>
+      </div>
     </div>
   </div>
 
-  <footer>© 2025 MCPExNghia | Neon Deluxe UI 💜</footer>
+  <footer>© 2025 MCPExNghia | Neon Deluxe • Local comments only</footer>
 
-  <script>
-    const SECRET_KEY = "mcpexnghia2025";
-    let addons = [];
-    let isAdmin = false;
+<script>
+  const SECRET_KEY = 'mcpexnghia2025';
+  let addons = [];
+  let currentPopupIndex = null;
+  let isAdmin = false;
 
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("active");
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('active');
+  }
+
+  function openAddForm(){
+    // simple inline form in admin tools to add an addon quickly
+    const html = `
+      <div style="padding:8px">
+        <input id="newName" placeholder="Tên addon" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;background:transparent;border:1px solid rgba(180,140,255,0.06);color:#fff" />
+        <input id="newDesc" placeholder="Mô tả" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;background:transparent;border:1px solid rgba(180,140,255,0.06);color:#fff" />
+        <input id="newImg" placeholder="URL ảnh" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;background:transparent;border:1px solid rgba(180,140,255,0.06);color:#fff" />
+        <input id="newLink" placeholder="Link tải" style="width:100%;padding:8px;border-radius:6px;margin-bottom:8px;background:transparent;border:1px solid rgba(180,140,255,0.06);color:#fff" />
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn" onclick="saveNewAddon()">Lưu</button>
+          <button class="btn secondary" onclick="renderAddons();">Hủy</button>
+        </div>
+      </div>
+    `;
+    // append at top of admin-tools
+    const adminTools = document.getElementById('admin-tools');
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    adminTools.prepend(container);
+  }
+
+  function saveNewAddon(){
+    const name = document.getElementById('newName').value.trim();
+    const desc = document.getElementById('newDesc').value.trim();
+    const img = document.getElementById('newImg').value.trim();
+    const link = document.getElementById('newLink').value.trim();
+    if(!name||!img){ alert('Vui lòng điền ít nhất tên và URL ảnh'); return; }
+    const obj = {name,description:desc||'No description',image:img,download:link||'#'};
+    // push and render; also store in localStorage so it persists per browser
+    const custom = JSON.parse(localStorage.getItem('addons_custom')||'[]');
+    custom.push(obj);
+    localStorage.setItem('addons_custom', JSON.stringify(custom));
+    // refresh source
+    loadAddons();
+    alert('✅ Addon mới đã được thêm (lưu local).');
+  }
+
+  function tryAdmin(){
+    const val = document.getElementById('adminKeyInput').value.trim();
+    if(val===SECRET_KEY){
+      isAdmin = true;
+      document.getElementById('admin-tools').style.display = 'block';
+      document.getElementById('admin-msg').innerText = '✅ Admin mode active';
+    } else {
+      document.getElementById('admin-msg').innerText = '❌ Key sai';
     }
+  }
 
-    async function loadAddons() {
-      const res = await fetch("addons.json");
-      addons = await res.json();
-      renderAddons();
+  function logoutAdmin(){
+    isAdmin = false;
+    document.getElementById('admin-tools').style.display = 'none';
+    document.getElementById('adminKeyInput').value = '';
+    document.getElementById('admin-msg').innerText = 'Đã đăng xuất';
+  }
+
+  function applyTheme(name){
+    if(name==='emerald'){
+      document.documentElement.style.setProperty('--violet','#0fb36b');
+      document.documentElement.style.setProperty('--violet-2','#74ffd1');
+    } else if(name==='red'){
+      document.documentElement.style.setProperty('--violet','#ff4b6e');
+      document.documentElement.style.setProperty('--violet-2','#ffb86e');
+    } else {
+      document.documentElement.style.setProperty('--violet','#8a3cff');
+      document.documentElement.style.setProperty('--violet-2','#5bd0ff');
     }
+  }
 
-    function renderAddons() {
-      const container = document.getElementById("addons-container");
-      container.innerHTML = "";
-      addons.forEach((a, i) => {
-        container.innerHTML += `
-          <div class="card" onclick="showPopup(${i})">
-            <img src="${a.image}" alt="${a.name}">
-            <h3>${a.name}</h3>
-            <p>${a.description}</p>
-            <button>Chi tiết</button>
-          </div>`;
-      });
+  function renderAddons(){
+    const container = document.getElementById('addons-container');
+    container.innerHTML = '';
+    const merged = [...addons];
+    // merge custom local addons
+    const custom = JSON.parse(localStorage.getItem('addons_custom')||'[]');
+    merged.push(...custom);
+    merged.forEach((a,i)=>{
+      const div = document.createElement('div');
+      div.className='card';
+      div.innerHTML = `
+        <img src="${a.image}" alt="${a.name}" loading="lazy" />
+        <h3>${a.name}</h3>
+        <p>${a.description}</p>
+        <div class="cta">
+          <button class="btn" onclick="openPopup(${i})">Chi tiết</button>
+          <a class="btn secondary" href="${a.download||'#'}" target="_blank">⬇️ Tải</a>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // load initial addons.json then render
+  async function loadAddons(){
+    try{
+      const res = await fetch('addons.json',{cache:'no-cache'});
+      const data = await res.json();
+      addons = data;
+    }catch(e){
+      console.warn('Không thể load addons.json — dùng local nếu có',e);
+      addons = [];
     }
+    renderAddons();
+  }
 
-    function showPopup(index) {
-      const a = addons[index];
-      document.getElementById("popupImg").src = a.image;
-      document.getElementById("popupName").innerText = a.name;
-      document.getElementById("popupDesc").innerText = a.description;
-      document.getElementById("popupLink").href = a.download;
-      document.getElementById("popup").style.display = "flex";
+  // Popup logic with comments per addon (index relative to merged list)
+  function openPopup(index){
+    currentPopupIndex = index;
+    const merged = [...addons].concat(JSON.parse(localStorage.getItem('addons_custom')||'[]'));
+    const a = merged[index];
+    if(!a) return;
+    document.getElementById('popupImg').src = a.image;
+    document.getElementById('popupName').innerText = a.name;
+    document.getElementById('popupDesc').innerText = a.description || '';
+    document.getElementById('popupLink').href = a.download || '#';
+    document.getElementById('popup').style.display = 'flex';
+    loadCommentsFor(index);
+  }
+  function closePopup(){ document.getElementById('popup').style.display='none'; currentPopupIndex=null; }
+
+  // comments stored localStorage under key comments_<index> so each addon in merged list has its own
+  function getCommentsKey(index){ return 'comments_addon_'+index; }
+  function loadCommentsFor(index){
+    const key = getCommentsKey(index);
+    const list = JSON.parse(localStorage.getItem(key)||'[]');
+    const container = document.getElementById('commentList');
+    container.innerHTML = '';
+    if(list.length===0){ container.innerHTML = '<div style="color:rgba(200,200,255,0.6)">Chưa có bình luận nào</div>'; return;}
+    list.forEach(c=>{
+      const el = document.createElement('div'); el.className='comment';
+      el.innerHTML = `<div class="meta">${escapeHtml(c.name||'Người dùng')} • ${new Date(c.t).toLocaleString()}</div><div class="body">${escapeHtml(c.text)}</div>`;
+      container.appendChild(el);
+    });
+  }
+  function addComment(){
+    if(currentPopupIndex===null) return;
+    const name = document.getElementById('commentName').value.trim() || 'Người dùng';
+    const text = document.getElementById('commentText').value.trim();
+    if(!text){ alert('Vui lòng nhập nội dung bình luận'); return;}
+    const key = getCommentsKey(currentPopupIndex);
+    const arr = JSON.parse(localStorage.getItem(key)||'[]');
+    arr.unshift({name,text,t:Date.now()});
+    localStorage.setItem(key, JSON.stringify(arr));
+    document.getElementById('commentText').value = '';
+    loadCommentsFor(currentPopupIndex);
+  }
+
+  // basic escaping to avoid HTML injection in comments
+  function escapeHtml(s){ return s.replace(/[&<>"'`]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;',"`":'&#96;'}[m]; }); }
+
+  // Toggle sidebar on menu icon click
+  function toggleSidebar(){
+    const sb = document.getElementById('sidebar');
+    sb.classList.toggle('active');
+  }
+
+  // initial load
+  window.addEventListener('load', ()=>{
+    // hide intro after animation (already set with CSS)
+    setTimeout(()=>{ document.getElementById('intro').style.display='none'; }, 2200);
+    // no prompt for key on load (per request)
+    loadAddons();
+    // apply default theme
+    applyTheme('violet');
+  });
+
+  // close popup when clicking outside card
+  document.getElementById('popup').addEventListener('click', (e)=>{
+    if(e.target.id==='popup') closePopup();
+  });
+
+  // accessibility: close sidebar with Escape
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape'){
+      const sb = document.getElementById('sidebar');
+      if(sb.classList.contains('active')) sb.classList.remove('active');
+      const p = document.getElementById('popup');
+      if(p.style.display==='flex') closePopup();
     }
+  });
 
-    function closePopup() { document.getElementById("popup").style.display = "none"; }
-
-    function logoutAdmin() {
-      isAdmin = false;
-      document.getElementById("admin-section").style.display = "none";
-      alert("🚪 Đã đăng xuất admin!");
-    }
-
-    // Kiểm tra key admin
-    window.onload = function() {
-      setTimeout(() => {
-        let key = prompt("🔑 Nhập key admin (bỏ qua nếu bạn là khách):");
-        if (key === SECRET_KEY) {
-          isAdmin = true;
-          document.getElementById("admin-section").style.display = "block";
-          alert("✅ Đăng nhập admin thành công!");
-        }
-        loadAddons();
-      }, 2000);
-    };
-  </script>
+</script>
 </body>
 </html>
+ 
