@@ -1,14 +1,16 @@
 [
   {
-    "name": "Horror Craft Beta verion 1",
+    "name": "Horror Craft",
     "description": "Thế giới Minecraft tối tăm, ám ảnh với các sinh vật kinh dị.",
-    "image": "https://i.ibb.co/Fq0MxFG1/file-0000000053e461faae9919b3ce2fd0d0.png",
-    "download": "https://gofile.io/d/abe1d31e-cf17-4286-ab68-f7b4409f87e2"
+    "image": "https://i.ibb.co/VpQZjsXG/horror-craft.png",
+    "download": "https://gofile.io/d/abe1d31e-cf17-4286-ab68-f7b4409f87e2",
+    "category": "popular"
   },
   {
     "name": "Zombie Tận Thế",
     "description": "Sinh tồn giữa bầy zombie hung hãn trong thế giới tàn khốc.",
     "image": "https://i.ibb.co/M5Z72jCC/zombie-tanthe.png",
-    "download": "https://www.mediafire.com/file/example2.mcaddon"
+    "download": "https://www.mediafire.com/file/your-actual-file.mcaddon",
+    "category": "new"
   }
 ]
