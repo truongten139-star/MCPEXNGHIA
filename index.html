@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>Orb Legends - Prototype</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="game">
+  <header><h1>Orb Legends</h1><p class="sub">Prototype - Anime 2D style (turn-based demo)</p></header>
+  <main>
+    <div id="battle">
+      <div class="character" id="player">
+        <div class="sprite player-sprite"></div>
+        <div class="info"><div id="pname">Hero</div><div id="php">HP: <span id="p-hp">100</span></div></div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="character" id="enemy">
+        <div class="sprite enemy-sprite"></div>
+        <div class="info"><div id="ename">Sea Raider</div><div id="ehp">HP: <span id="e-hp">80</span></div></div>
+      </div>
+    </div>
+
+    <div id="controls">
+      <button id="autoBtn">Auto Fight</button>
+      <button id="attackBtn">Attack</button>
+      <button id="skillBtn">Skill (Cost 20 Energy)</button>
+      <div id="energy">Energy: <span id="p-energy">50</span></div>
+    </div>
+
+    <div id="orbs">
+      <h3>7 Mystic Orbs</h3>
+      <div id="orbContainer"></div>
+    </div>
+
+    <div id="log"></div>
+  </main>
+  <footer>Touch "Auto Fight" to let the hero auto-battle. Designed for mobile.</footer>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
